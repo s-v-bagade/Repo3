@@ -21,7 +21,7 @@ stages {
             script {
                 sh """
                 docker rm -f ${CONTAINER_NAME} || true
-                docker run -dit --name ${CONTAINER_NAME} -p 8080:80 ${IMAGE_NAME}
+                docker run -dit --name ${CONTAINER_NAME} -p 80:80 ${IMAGE_NAME}
                 """
             }
         }
