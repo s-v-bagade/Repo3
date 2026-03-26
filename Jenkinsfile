@@ -1,42 +1,41 @@
 pipeline {
-agent any
 
-environment {
-    CONTAINER_NAME = "my-httpd-container"
-    IMAGE_NAME = "httpd:latest"
-}
-
-stages {
-
-    stage('Pull Image') {
-        steps {
-            script {
-                docker.image("${IMAGE_NAME}").pull()
+        agent {
+            label {
+            label 'built-in'
+            customWorkspace "/mnt/project"
             }
         }
-    }
 
-    stage('Run Container') {
-        steps {
-            script {
-                sh """
-                docker rm -f ${CONTAINER_NAME} || true
-                docker run -dit --name ${CONTAINER_NAME} -p 80:80 ${IMAGE_NAME}
-                """
-            }
+        stages {
+
+               stage('Pull Image') {
+                    steps {
+			        script {
+                          docker.image("httpd:latest").pull()
+                        }
+					}
+                }
+
+                stage('Run Container') {
+                    steps {
+                     sh """
+                     docker rm -f 
+                     docker run -itd --name c1 -p 80:80 httpd:latest
+                     """
+                    }
+                }
+
+                stage('Copy index.html to Container') {
+                    steps {
+                    sh """
+                    docker cp index.html c1:/usr/local/apache2/htdocs/index.html
+					docker exec c1 chmod 777 /usr/local/apache2/htdocs/index.html
+                    """
+					} 
+                }
+
         }
-    }
 
-    stage('Copy index.html to Container') {
-        steps {
-            script {
-                sh """
-                docker cp index.html ${CONTAINER_NAME}:/usr/local/apache2/htdocs/index.html
-                """
-            }
-        }
-    }
 
-}
-
-}
+    }  
