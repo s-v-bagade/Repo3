@@ -20,7 +20,7 @@ pipeline {
                 stage('Run Container') {
                     steps {
                      sh """
-                     docker rm -f 
+                     docker rm -f c1
                      docker run -itd --name c1 -p 80:80 httpd:latest
                      """
                     }
