@@ -11,14 +11,9 @@ pipeline {
 		}
         
 		stages {
-		       stage ("clone repo") {
+		       stage ("clear workspace") {
 			          steps {
 					     sh "rm -rf *"
-					     git(
-						 url: 'https://github.com/s-v-bagade/Repo3.git',
-						 credentialsId: 'github',
-						 branch: '2026Q3'
-						 )
 					  }
 			   }
 			   
