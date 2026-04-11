@@ -1,9 +1,6 @@
 pipeline {
         agent {
-            node {
-            label 'repo3'
-            customWorkspace "/mnt/node"
-            }
+            label 'node2'  
         }
 		
 		triggers { 
@@ -14,9 +11,9 @@ pipeline {
 			   stage ("deploy index") {
 			          steps {
 					  sh ''' 
-					  cp index.html /var/www/html/
-					  chmod 777 /var/www/html/index.html
-					  systemctl restart httpd
+					  sudo cp index.html /var/www/html/
+					  sudo chmod 777 /var/www/html/index.html
+					  sudo systemctl restart httpd
 					  '''
 					  }
 			   }
