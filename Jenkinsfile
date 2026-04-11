@@ -11,12 +11,6 @@ pipeline {
 		}
         
 		stages {
-		       stage ("clear workspace") {
-			          steps {
-					     sh "rm -rf *"
-					  }
-			   }
-			   
 			   stage ("deploy index") {
 			          steps {
 					  sh ''' 
