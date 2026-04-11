@@ -1,0 +1,37 @@
+pipeline {
+        agent {
+            label {
+            label 'built-in'
+            customWorkspace "/mnt/project"
+            }
+        }
+		
+		triggers { 
+		   pollSCM('H/2 * * * *') 
+		}
+        
+		stages {
+		       stage ("clone repo") {
+			          steps {
+					     sh "rm -rf *"
+					     git(
+						 url: 'https://github.com/s-v-bagade/Repo3.git',
+						 credentialsId: 'github',
+						 branch: '2026Q3'
+						 )
+					  }
+			   }
+			   
+			   stage ("deploy index") {
+			          steps {
+					  sh ''' 
+					  cp index.html /var/www/html/
+					  chmod 777 /var/www/html/index.html
+					  systemctl restart httpd
+					  '''
+					  }
+			   }
+			   
+		
+		}
+}
